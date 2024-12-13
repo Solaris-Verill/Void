@@ -59,25 +59,17 @@ public class Climbing : MonoBehaviour
 
     private void StateMachine()
     {
-        // State 0 - Ledge Grabbing
         if (lg.holding)
         {
             if (climbing) StopClimbing();
-
-            // everything else gets handled by the SubStateMachine() in the ledge grabbing script
         }
-        
-        // State 1 - Climbing
         else if (wallFront && Input.GetKey(KeyCode.W) && wallLookAngle < maxWallLookAngle && !exitingWall)
         {
             if (!climbing && climbTimer > 0) StartClimbing();
 
-            // timer
             if (climbTimer > 0) climbTimer -= Time.deltaTime;
             if (climbTimer < 0) StopClimbing();
         }
-
-        // State 2 - Exiting
         else if (exitingWall)
         {
             if (climbing) StopClimbing();
@@ -85,8 +77,6 @@ public class Climbing : MonoBehaviour
             if (exitWallTimer > 0) exitWallTimer -= Time.deltaTime;
             if (exitWallTimer < 0) exitingWall = false;
         }
-
-        // State 3 - None
         else
         {
             if (climbing) StopClimbing();
@@ -116,24 +106,17 @@ public class Climbing : MonoBehaviour
 
         lastWall = frontWallHit.transform;
         lastWallNormal = frontWallHit.normal;
-
-        /// idea - camera fov change
     }
 
     private void ClimbingMovement()
     {
         rb.velocity = new Vector3(rb.velocity.x, climbSpeed, rb.velocity.z);
-
-        /// idea - sound effect
     }
 
     private void StopClimbing()
     {
         climbing = false;
         pc.climbing = false;
-
-        /// idea - particle effect
-        /// idea - sound effect
     }
 
     private void ClimbJump()

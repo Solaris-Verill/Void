@@ -51,7 +51,6 @@ public class LedgeGrabbing : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Vertical");
         bool anyInputKeyPressed = horizontalInput != 0 || verticalInput != 0;
 
-        // SubState 1 - Holding onto ledge
         if (holding)
         {
             FreezeRigidbodyOnLedge();
@@ -62,8 +61,6 @@ public class LedgeGrabbing : MonoBehaviour
 
             if (Input.GetKeyDown(jumpKey)) LedgeJump();
         }
-
-        // Substate 2 - Exiting Ledge
         else if (exitingLedge)
         {
             if (exitLedgeTimer > 0) exitLedgeTimer -= Time.deltaTime;
@@ -119,21 +116,17 @@ public class LedgeGrabbing : MonoBehaviour
         Vector3 directionToLedge = currLedge.position - transform.position;
         float distanceToLedge = Vector3.Distance(transform.position, currLedge.position);
 
-        // Move player towards ledge
         if(distanceToLedge > 1f)
         {
             if(rb.velocity.magnitude < moveToLedgeSpeed)
                 rb.AddForce(directionToLedge.normalized * moveToLedgeSpeed * 1000f * Time.deltaTime);
         }
-
-        // Hold onto ledge
         else
         {
             if (!pc.freeze) pc.freeze = true;
             if (pc.unlimited) pc.unlimited = false;
         }
 
-        // Exiting if something goes wrong
         if (distanceToLedge > maxLedgeGrabDistance) ExitLedgeHold();
     }
 
